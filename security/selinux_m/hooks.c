@@ -504,14 +504,24 @@ static int selinux_is_sblabel_mnt(struct super_block *sb)
 {
 	struct superblock_security_struct *sbsec = sb->s_security;
 
-	return sbsec->behavior == SECURITY_FS_USE_XATTR ||
-		sbsec->behavior == SECURITY_FS_USE_TRANS ||
-		sbsec->behavior == SECURITY_FS_USE_TASK ||
-		/* Special handling. Genfs but also in-core setxattr handler */
-		!strcmp(sb->s_type->name, "sysfs") ||
-		!strcmp(sb->s_type->name, "pstore") ||
-		!strcmp(sb->s_type->name, "debugfs") ||
-		!strcmp(sb->s_type->name, "rootfs");
+	if (sbsec->behavior == SECURITY_FS_USE_XATTR ||
+	    sbsec->behavior == SECURITY_FS_USE_TRANS ||
+	    sbsec->behavior == SECURITY_FS_USE_TASK ||
+	    sbsec->behavior == SECURITY_FS_USE_NATIVE)
+		return 1;
+
+	/* Special handling for sysfs. Is genfs but also has setxattr handler*/
+	if (strncmp(sb->s_type->name, "sysfs", sizeof("sysfs")) == 0)
+		return 1;
+
+	/*
+	 * Special handling for rootfs. Is genfs but supports
+	 * setting SELinux context on in-core inodes.
+	 */
+	if (strncmp(sb->s_type->name, "rootfs", sizeof("rootfs")) == 0)
+		return 1;
+
+	return 0;
 }
 
 static int sb_finish_set_opts(struct super_block *sb)
@@ -4668,11 +4678,8 @@ static int sock_has_perm(struct task_struct *task, struct sock *sk, u32 perms)
 	struct lsm_network_audit net = {0,};
 	u32 tsid = task_sid(task);
 
-	if (unlikely(!sksec)){
-		printk(KERN_CRIT "[SELinux] sksec is NULL, socket is already freed. \n");
-		return -EINVAL;
-	}
-
+	if (!sksec)
+		return -EFAULT;
 	if (sksec->sid == SECINITSID_KERNEL)
 		return 0;
 
@@ -4778,10 +4785,18 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
 		u32 sid, node_perm;
 
 		if (family == PF_INET) {
+			if (addrlen < sizeof(struct sockaddr_in)) {
+				err = -EINVAL;
+				goto out;
+			}
 			addr4 = (struct sockaddr_in *)address;
 			snum = ntohs(addr4->sin_port);
 			addrp = (char *)&addr4->sin_addr.s_addr;
 		} else {
+			if (addrlen < SIN6_LEN_RFC2133) {
+				err = -EINVAL;
+				goto out;
+			}
 			addr6 = (struct sockaddr_in6 *)address;
 			snum = ntohs(addr6->sin6_port);
 			addrp = (char *)&addr6->sin6_addr.s6_addr;
@@ -6656,7 +6671,7 @@ static int selinux_setprocattr(struct task_struct *p,
 		return error;
 
 	/* Obtain a SID for the context, if one was specified. */
-	if (size && str[1] && str[1] != '\n') {
+	if (size && str[0] && str[0] != '\n') {
 		if (str[size-1] == '\n') {
 			str[size-1] = 0;
 			size--;

@@ -174,8 +174,8 @@ static void ata_eh_handle_port_resume(struct ata_port *ap)
 { }
 #endif /* CONFIG_PM */
 
-static void __ata_ehi_pushv_desc(struct ata_eh_info *ehi, const char *fmt,
-				 va_list args)
+static __printf(2, 0) void __ata_ehi_pushv_desc(struct ata_eh_info *ehi,
+				 const char *fmt, va_list args)
 {
 	ehi->desc_len += vscnprintf(ehi->desc + ehi->desc_len,
 				     ATA_EH_DESC_LEN - ehi->desc_len,
@@ -605,7 +605,7 @@ void ata_scsi_error(struct Scsi_Host *host)
 	ata_scsi_port_error_handler(host, ap);
 
 	/* finish or retry handled scmd's and clean up */
-	WARN_ON(host->host_failed || !list_empty(&eh_work_q));
+	WARN_ON(!list_empty(&eh_work_q));
 
 	DPRINTK("EXIT\n");
 }
@@ -3489,6 +3489,9 @@ static int ata_eh_set_lpm(struct ata_link *link, enum ata_lpm_policy policy,
 			}
 		}
 	}
+
+	link->last_lpm_change = jiffies;
+	link->flags |= ATA_LFLAG_CHANGED;
 
 	return 0;
 
