@@ -5099,9 +5099,7 @@ static inline int hmp_boost(void)
 
 static inline int hmp_semiboost(void)
 {
-	if (hmp_semiboost_val)
-		return 1;
-	return 0;
+	return !!hmp_semiboost_val;
 }
 
 static inline int hmp_family_boost(struct task_struct *p)
@@ -5418,8 +5416,8 @@ static int hmp_boost_from_sysfs(int value)
 	if (value == 1)
 		hmp_boost_val++;
 	else if (value == 0)
-		if (hmp_boost_val >= 1)
-			hmp_boost_val--;
+		if (hmp_boost_val)
+			hmp_boost_val = true;
 		else
 			ret = -EINVAL;
 	else
@@ -5454,8 +5452,8 @@ static int hmp_semiboost_from_sysfs(int value)
 	if (value == 1)
 		hmp_semiboost_val++;
 	else if (value == 0)
-		if (hmp_semiboost_val >= 1)
-			hmp_semiboost_val--;
+		if (hmp_semiboost_val)
+			hmp_semiboost_val = true;
 		else
 			ret = -EINVAL;
 	else
