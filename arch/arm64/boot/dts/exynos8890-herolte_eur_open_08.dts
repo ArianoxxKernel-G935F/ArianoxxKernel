@@ -8031,13 +8031,6 @@
 			id = <0xa>;
 		};
 
-		secure_camera {
-			compatible = "exynos8890-ion,secure_camera";
-			secure;
-			reg = <0x0 0xfc000000 0x1c00000>;
-			id = <0xb>;
-		};
-
 		modem_if@0xF0000000 {
 			compatible = "exynos,modem_if";
 			reg = <0x0 0xf0000000 0x8800000>;
