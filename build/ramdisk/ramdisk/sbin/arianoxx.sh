@@ -41,6 +41,10 @@ su -c "pm enable com.google.android.gsf/.update.SystemUpdateService"
 su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver"
 su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver"
 
+# mediakill (Credits: lyapota)
+killall -9 android.process.media
+killall -9 mediaserver
+
 # init.d
 if [ ! -d /system/etc/init.d ]; then
 	mkdir -p /system/etc/init.d
