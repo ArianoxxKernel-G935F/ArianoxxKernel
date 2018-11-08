@@ -85,11 +85,11 @@ static inline void log_eol(u16 source)
 
 	if (log_ctx.prev_source)
 		/* MobiCore Userspace */
-		dev_info(g_ctx.mcd, "%03x|%s\n", log_ctx.prev_source,
+		dev_dbg(g_ctx.mcd, "%03x|%s\n", log_ctx.prev_source,
 			 log_ctx.line);
 	else
 		/* MobiCore kernel */
-		dev_info(g_ctx.mcd, "%s\n", log_ctx.line);
+		dev_dbg(g_ctx.mcd, "%s\n", log_ctx.line);
 
 	log_ctx.line_len = 0;
 	log_ctx.line[0] = 0;
