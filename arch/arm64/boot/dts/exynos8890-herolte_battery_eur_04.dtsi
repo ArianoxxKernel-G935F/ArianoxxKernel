@@ -8,9 +8,20 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
 */
-#include "exynos8890-vlte_battery_00.dtsi"
+
+#include "exynos8890-herolte_battery.dtsi"
 / {
-	battery {
-		battery,fast_charging_current = <1800 450 450 1800 800 1200 1000 460 1200 450 1800 1800 1800 1600 1800 450 450 400 700 1300 300 1000 1500 450 1800 1800 1000 1800 80 1800 1000 1400 450 1000 1800 1800 1800 1800>;
+	pinctrl@10580000 {
+		wpc_det: wpc-det {
+			samsung,pins = "gpa2-0";
+			samsung,pin-function = <0xf>;
+			samsung,pin-pud = <1>;
+		};
+	};
+
+	hsi2c@14E30000 {
+		p9220-charger@61 {
+			battery,wpc_det = <&gpa2 0 0>;
+		};
 	};
 };

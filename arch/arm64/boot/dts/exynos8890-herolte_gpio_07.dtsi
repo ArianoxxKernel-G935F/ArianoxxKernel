@@ -7,9 +7,18 @@
  * published by the Free Software Foundation.
 */
 
-// Support HERO LTE HW REV0.2 (b0011)
+// Support HERO LTE HW REV0.7 (b1000)
 
 #include "exynos_gpio_config_macros.dtsi"
+
+// gpa: pinctrl_0
+&pinctrl_0 {
+		pinctrl-names = "sleep";
+		pinctrl-0 = <&sleep0>;
+		sleep0:sleep-state {
+			PIN_SLP(gpa3-7, OUT0, NONE);      /* TFLASH_EN */
+		};
+};
 
 // gph0: do not add init setting for NC pins!!!
 &pinctrl_1 {
@@ -75,7 +84,7 @@
 		PIN_IN(gpi1-1, DOWN, LV1);	/* NC */
 
 		PIN_IN(gpi2-1, DOWN, LV1);	/* NC */
-		PIN_IN(gpi2-5, DOWN, LV1);/* FG_ERR */
+		PIN_IN(gpi2-5, DOWN, LV1);	/* NC */
 	};
 	sleep5: sleep-state {
 		PIN_SLP(gpi1-0, PREV, DOWN);	/* MST_PWR_EN */
@@ -88,7 +97,7 @@
 		PIN_SLP(gpi2-2, INPUT, NONE);	/* DISPTYPE_DET */
 		PIN_SLP(gpi2-3, PREV, NONE);	/* BT_WAKE */
 		PIN_SLP(gpi2-4, INPUT, DOWN);	/* IFC_SENSE_INT_AP */
-		PIN_SLP(gpi2-5, INPUT, DOWN);	/* FG_ERR */
+		PIN_SLP(gpi2-5, INPUT, DOWN);	/* NC */
 		PIN_SLP(gpi2-6, INPUT, NONE);	/* SUB_PMIC_IRQ_N */
 		PIN_SLP(gpi2-7, PREV, NONE);	/* NFC_EN */
 	};
@@ -238,6 +247,7 @@
 	pinctrl-1 = <&sleep9>;
 	initial9: initial-state {
 		PIN_IN(gpe0-4, DOWN, LV1);	/* NC */
+		PIN_IN(gpe0-5, DOWN, LV1);	/* NC */
 
 		PIN_IN(gpe1-3, DOWN, LV1);	/* NC */
 		PIN_IN(gpe1-4, DOWN, LV1);	/* NC */
@@ -246,7 +256,10 @@
 		PIN_IN(gpe1-7, DOWN, LV1);	/* NC */
 
 		PIN_IN(gpe3-1, DOWN, LV1);	/* NC */
-		PIN_IN(gpe3-5, UP, LV1);	/* TDMB_SPI_CS */
+		PIN_IN(gpe3-4, DOWN, LV1);	/* NC */
+		PIN_IN(gpe3-5, DOWN, LV1);	/* NC */
+		PIN_IN(gpe3-6, DOWN, LV1);	/* NC */
+		PIN_IN(gpe3-7, DOWN, LV1);	/* NC */
 
 		PIN_IN(gpe4-0, DOWN, LV1);	/* NC */
 		PIN_IN(gpe4-1, DOWN, LV1);	/* NC */
@@ -261,6 +274,7 @@
 		PIN_IN(gpe6-1, DOWN, LV1);	/* I2C13_SCL_1P8(NC) */
 		PIN_IN(gpe6-2, DOWN, LV1);	/* I2C14_SDA_1P8(NC) */
 		PIN_IN(gpe6-3, DOWN, LV1);	/* I2C14_SCL_1P8(NC) */
+		PIN_IN(gpe6-7, DOWN, LV1);	/* NC */
 
 		PIN_IN(gpj1-1, DOWN, LV1);	/* NC */
 		PIN_IN(gpj1-4, DOWN, LV1);	/* NC */
@@ -277,8 +291,8 @@
 		PIN_SLP(gpe0-1, OUT1, UP);	/* BT_UART_TXD */
 		PIN_SLP(gpe0-2, INPUT, UP);	/* BT_UART_CTS */
 		PIN_SLP(gpe0-3, OUT1, UP);	/* BT_UART_RTS */
-		PIN_SLP(gpe0-4, INPUT, DOWN);	/* OLED_ID */
-		PIN_SLP(gpe0-5, OUT0, NONE);	/* TFLASH_EN */
+		PIN_SLP(gpe0-4, INPUT, DOWN);	/* NC */
+		PIN_SLP(gpe0-5, INPUT, DOWN);	/* NC */
 		PIN_SLP(gpe0-6, INPUT, DOWN);	/* WLAN_UART_RXD_DBG */
 		PIN_SLP(gpe0-7, INPUT, DOWN);	/* WLAN_UART_TXD_DBG */
 
@@ -302,12 +316,12 @@
 
 		PIN_SLP(gpe3-0, PREV, NONE);	/* BTP_LDO_EN1 */
 		PIN_SLP(gpe3-1, INPUT, DOWN);	/* NC */
-		PIN_SLP(gpe3-2, INPUT, DOWN);	/* BTP_ID */
+		PIN_SLP(gpe3-2, PREV, DOWN);	/* BTP_ID */
 		PIN_SLP(gpe3-3, INPUT, DOWN);	/* VTCAM_ID */
-		PIN_SLP(gpe3-4, OUT0, NONE);	/* TDMB_SPI_CLK */
-		PIN_SLP(gpe3-5, OUT0, NONE);	/* TDMB_SPI_CS */
-		PIN_SLP(gpe3-6, OUT0, NONE);	/* TDMB_SPI_MISO */
-		PIN_SLP(gpe3-7, OUT0, NONE);	/* TDMB_SPI_MOSI */
+		PIN_SLP(gpe3-4, INPUT, DOWN);	/* NC */
+		PIN_SLP(gpe3-5, INPUT, DOWN);	/* NC */
+		PIN_SLP(gpe3-6, INPUT, DOWN);	/* NC */
+		PIN_SLP(gpe3-7, INPUT, DOWN);	/* NC */
 
 		PIN_SLP(gpe4-0, INPUT, DOWN);	/* NC */
 		PIN_SLP(gpe4-1, INPUT, DOWN);	/* NC */
@@ -334,7 +348,7 @@
 		PIN_SLP(gpe6-4, OUT0, DOWN);	/* AP_MCU_INT_1P8 */
 		PIN_SLP(gpe6-5, PREV, NONE);	/* CODEC_RST_N */
 		PIN_SLP(gpe6-6, OUT0, NONE);	/* NFC_WPT_MODE */
-		PIN_SLP(gpe6-7, OUT0, NONE);	/* TDMB_PWR_EN */
+		PIN_SLP(gpe6-7, INPUT, DOWN);	/* NC */
 
 		PIN_SLP(gpe7-0, OUT0, DOWN);	/* NFC_FIRM */
 		PIN_SLP(gpe7-1, INPUT, DOWN);	/* PCD_INT */
