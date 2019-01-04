@@ -212,6 +212,9 @@ DHDCFLAGS += -DENABLE_IPMCAST_FILTER
 # For special PNO Event keep wake lock for 10sec
 DHDCFLAGS += -DCUSTOM_PNO_EVENT_LOCK_xTIME=10
 
+#For Passing all multicast packets to host when not in suspend mode.
+# DHDCFLAGS += -DPASS_ALL_MCAST_PKTS
+
 # For IPV6 Neighbor Discovery Offload Support
 DHDCFLAGS += -DIPV6_NDO_SUPPORT
 
