@@ -1,0 +1,413 @@
+##
+# Fix Colorspace Issue
+# You can use one of following values:
+#   "rgba", "abgr", "argb", "bgra"
+
+ini_set("force_colorspace","rgba");
+
+##
+# Initializing Information
+#
+
+ini_set("rom_name",             "SuperSpeedKernel || by @Arianoxx ");
+ini_set("rom_version",          "V2.2 - G93XFXXS3EREM");
+ini_set("rom_author",           "@Arianoxx");
+ini_set("rom_device",           "S7/S7 edge");
+ini_set("rom_date",             "4/1/2019");
+
+
+writetmpfile("check_s7.prop","install=0");
+writetmpfile("deodexed.prop","install=0");
+writetmpfile("g930x.prop","install=0");
+writetmpfile("g935x.prop","install=0");
+
+##
+# Show Simple Splash
+#
+splash(
+#  #-- Duration 4000ms / 4 seconds
+    4000,
+
+  #-- <AROMA Resource Dir>/AK.png
+    "AK"
+);
+
+##
+# Font and Theme Selection
+#
+
+fontresload( "0", "ttf/Roboto-Regular.ttf;ttf/DroidSansArabic.ttf;ttf/DroidSansFallback.ttf;", "12" ); #-- Use sets of font (Font Family)
+theme("touchwiz");
+
+##
+# SET LANGUAGE & FONT FAMILY
+#
+
+loadlang("langs/en.lang");
+fontresload( "0", "ttf/Roboto-Regular.ttf", "12" ); #-- "0" = Small Font ( Look at Fonts & UNICODE Demo Below )
+fontresload( "1", "ttf/Roboto-Regular.ttf", "18" ); #-- "1" = Big Font
+
+##
+#   SHOW ROM/Mod INFORMATION
+#
+viewbox(
+	#-- Title
+	"<~welcome.title>",
+
+ 	#-- Text
+	"<~welcome.text1> <b>"+
+	#-- Get Config Value
+	ini_get("rom_name")+
+	"</b> <~common.for> <b>"+ini_get("rom_device")+"</b>.\n\n"+
+
+	"<~welcome.text2>\n\n"+
+	
+	"<~welcome.version>\t\t: <b><#selectbg_g>"+ini_get("rom_version")+"</#></b>\n"+
+    "<~welcome.codename>\t: <b><#selectbg_g>@Arianoxx</#></b>\n"+
+	"<~welcome.updated>\t\t: <b><#selectbg_g>"+ini_get("rom_date")+"</#></b>\n\n\n"+
+
+	"<~welcome.next>",
+
+	#-- Icon
+	"@welcome"
+);
+
+##
+# LICENSE
+#
+
+agreebox(
+	#-- Title
+	"ArianoxxKernel™",
+
+	#-- Subtitle / Description
+	"Read Carefully",
+
+	#-- Icon:
+	"@license",
+
+	#-- Text Content 
+	resread("license.txt"),
+
+	#-- Checkbox Text
+	"Have you really read it and are agree?",
+
+	#-- Unchecked Alert Message
+	"You've to agree!"
+);
+
+##
+# MAIN MENU- INSTALLER n MISC
+#
+menubox(
+	#-- Title
+	"ArianoxxKernel Menu",
+
+	#-- Sub Title
+	"Please select from the Menu Below to Modify the required features",
+
+	#-- Icon
+	"@apps",
+ 
+	#-- Will be saved in /tmp/aroma/menu.prop
+	"menu.prop",
+    
+     #-------------------------+-----------------[ Menubox Items ]-------------------------+---------------#
+     # TITLE                   |  SUBTITLE                                                 |   Item Icons  #
+     #-------------------------+-----------------------------------------------------------+---------------#	
+	
+	"Installation",		"Kernel Installation",		                                "@install",      #-- selected = 1
+	"System Info",		"Get and show device/partition informations",			    "@info",         #-- selected = 2
+	"ChangeLog",		"ArianoxxKernel ChangeLog and info",						"@agreement",    #-- selected = 3
+	"Quit Install",		"Leaving the Aroma setup to install another Kernel :(",		"@install"       #-- selected = 4
+
+);
+
+##
+# System Info 
+#
+
+if prop("menu.prop","selected")=="2" then
+
+	#-- Show Please Wait
+	pleasewait("Getting System Information...");
+
+	#-- Fetch System Information
+	setvar(
+		#-- Variable Name
+		"sysinfo",
+
+		#-- Variable Value
+		"<@center><b>Your Device System Information</b></@>\n\n"+
+
+		"Device Name\t\t: <#ff0000>Galaxy S7/S7E+</#>\n"+
+		"Board Name\t\t: <#ff0000>SM-G930F/G935F</#>\n"+
+		"Manufacturer\t\t: <#ff0000>Samsung</#>\n"+
+	  
+		"\n"+
+
+		"System Size\t\t: <b><#selectbg_g>"+getdisksize("/system","m")+" MB</#></b>\n"+
+		"\tFree\t\t: <b><#selectbg_g>"+getdiskfree("/system","m")+" MB</#></b>\n\n"+
+		"Data Size\t\t: <b><#selectbg_g>"+getdisksize("/data","m")+" MB</#></b>\n"+
+		"\tFree\t\t: <b><#selectbg_g>"+getdiskfree("/data","m")+" MB</#></b>\n\n"+
+		"SDCard Size\t\t: <b><#selectbg_g>"+getdisksize("/sdcard","m")+" MB</#></b>\n"+
+		"\tFree\t\t: <b><#selectbg_g>"+getdiskfree("/sdcard","m")+" MB</#></b>\n\n"+
+
+		""
+	);
+  
+	#-- Show Textbox
+	textbox(
+		#-- Title
+		"System Information",
+    
+		#-- Subtitle
+		"Current system Information on your S8",
+    
+		#-- Icon
+		"@info",
+    
+		#-- Text
+		getvar("sysinfo")
+	);
+  
+	#-- Show Alert
+	alert(
+		#-- Alert Title
+		"Finished",
+    
+		#-- Alert Text
+		"You will be back to Menu",
+    
+		#-- Alert Icon
+		"@alert"
+	);
+  
+	#-- Back to Menu ( 2 Wizard UI to Back )
+	back("2");
+  
+endif;
+
+##
+# CHANGELOG DISPLAY
+#
+
+if prop("menu.prop","selected")=="3" then
+
+	#-- TextDialog 
+	textdialog(
+		#-- Title
+		"ArianoxxKernel Changelog",
+		#-- Text
+		resread("changelog.txt"),
+		#-- Custom OK Button Text (Optional)
+		"Close"
+	);
+ 
+	#-- Back to Menu ( 2 Wizard UI to Back )
+	back("1");
+  
+endif;
+
+##
+# QUIT INSTALLER
+#
+
+if prop("menu.prop","selected")=="4" then
+
+#-- Exit
+	if confirm(
+		#-- Title
+		"Exit",
+		#-- Text
+		"Are you sure want to exit the Installer?",
+		#-- Icon (Optional)
+		"@alert"
+	)=="yes"
+	then
+		#-- Exit 
+		exit("");
+	endif;
+endif;
+
+
+##
+#  Select Type of Install
+#
+
+if prop("menu.prop","selected")=="1" then
+
+resexec("scripts/restore.sh");
+
+##
+# Debloat Form
+#
+
+form(
+    "Instalation Options",
+    "Choose your Debloat option here",
+    "@install",
+    "install.prop",
+  #
+  # Type:
+  #  - group              = Group
+  #  - select             = Select Item
+  #  - select.selected    = Selected Select Item
+  #  - check              = Checkbox Item
+  #  - check.checked      = Checked Checkbox Item
+  #  - hide               = Hidden
+  #
+  #-------------+-----------------------[ Selectbox Without Group ]------------------------------#
+  # PROP ID     | TITLE            |  SUBTITLE                                   |    Type       #
+  #-------------+--------+-------------------------------------------------------+---------------#
+	"group",		"Installation Options",		"",									"group",
+	"full",	        "Install",		    "Takes you throught the whole aroma",		"select.selected",
+    "quick",        "Quick Install",    "Quick Install using previous choices (jump to install screen without going throught the whole aroma)",          "select"
+	
+);
+
+if prop("install.prop","group") !="quick" then
+
+##
+# System/Settings Form
+#
+
+form(
+    "Mods",
+    "Choose what mod do you want",
+    "@install",
+    "mods.prop",
+  #
+  # Type:
+  #  - group              = Group
+  #  - select             = Select Item
+  #  - select.selected    = Selected Select Item
+  #  - check              = Checkbox Item
+  #  - check.checked      = Checked Checkbox Item
+  #  - hide               = Hidden
+  #
+  #-------------+-----------------------[ Selectbox Without Group ]------------------------------#
+  # PROP ID     | TITLE            |  SUBTITLE                                   |    Type       #
+  #-------------+--------+-------------------------------------------------------+---------------#
+	"mode",	    "Mods Menu",		"",								  "group",
+	"clean",	"Clean Old root data",		"",		                  "check",
+	"private",	"Private Mod Fix",		"",		                  "check",
+	"spectrum",	"Spectrum App",		"Profiling controll",		                  "check",
+	"mtweaks",	"Mtweaks",		"Kernel Manage utility",	          "check"
+);
+
+##
+# Emoji Form
+#
+
+form(
+    "Root",
+    "Choose What kind of root do you want?",
+    "@install",
+    "rooty.prop",
+  #
+  # Type:
+  #  - group              = Group
+  #  - select             = Select Item
+  #  - select.selected    = Selected Select Item
+  #  - check              = Checkbox Item
+  #  - check.checked      = Checked Checkbox Item
+  #  - hide               = Hidden
+  #
+  #-------------+-----------------------[ Selectbox Without Group ]------------------------------#
+  # PROP ID     | TITLE            |  SUBTITLE                                   |    Type       #
+  #-------------+--------+-------------------------------------------------------+---------------#
+	"rot",	    "Select which Root method you want",	"",								            "group",
+	"magisk",	"Magisk Root",                  "Install Magisk and BusyBox (could give problem)",		        "select.selected",
+	"supersu",	"SuperSu Root",                  "Install SuperSu",		        "select.selected",
+	"non",		"Dont Install",		            "Choose for not installing any root",		"select"
+);
+endif;
+endif;
+
+if prop("install.prop","group") !="quick" then
+    pleasewait("Reading configurations...");
+    setvar("rest_status", resexec("scripts/restore.sh"));
+    if (getvar("rest_status") != "0") then
+	  alert(
+	      "Error",
+	      "Some files from previous configuration are missing\nPlease perform standard installation",
+	      "@alert"
+	  );
+	  back("1");
+    endif;
+endif;
+
+alert("Remember!","Thanks for installing my kernel, Dont forget to like, share and if you like, donate me", "@info");
+
+# Installation UI
+
+ini_set("text_next", "Install Now");
+ini_set("icon_next", "@installbutton");
+  
+viewbox(
+	#-- Title
+	"Ready to Install",
+
+	#-- Text
+	"ArianoxxKernel is ready to be installed.\n\n"+
+	"Press <b>Install ROM</b> to begin the installation.\n\n"+
+	"To review or change any of your installation settings, press <b>Back</b>.\n\n"+
+	"Press Menu -> Quit Installation to quit.",
+
+	#-- Icon
+	"@install"
+);
+
+if prop("menu.prop","selected")== "1" then
+
+ini_set("text_next", "Next");
+ini_set("icon_next", "@next");
+
+install(
+	"ArianoxxKernel Installation",
+	getvar("rom_name") + "\n" +
+	"Please wait while ArianoxxKernel is conquering your phone" +
+	"",
+	"@install"
+);
+
+#Save installation config
+resexec("scripts/save.sh");
+
+##
+#
+# Next Button is "Finish"
+#
+ini_set("text_next", "Finish");
+ini_set("icon_next", "@finish");
+
+checkviewbox(
+  #-- Title
+    "ArianoxxKernel Installation",
+  
+  #-- Text
+    "<#selectbg_g><b>Congratulation...</b></#>\n\n"+
+    ini_get("rom_name") + " has installed ArianoxxKernel on your device.\n\n"+
+    "Installer Status: "+getvar("retstatus")+"\n\n",
+	
+  #-- Icon
+    "@welcome",
+
+  #-- Checkbox Text
+    "Reboot your device now.",
+
+  #-- Initial Checkbox value ( 0=unchecked, 1=checked ) -  (Optional, default:0)
+    "1",
+
+  #-- Save checked value in variable "reboot_it" (Optional)
+    "reboot_it"
+);
+endif;
+if
+  getvar("reboot_it")=="1"
+then
+  reboot("onfinish");
+  endif;
+
+alert("REMEMBER!","Thank you for installing ArianoxxKernel™ ", "@next");
