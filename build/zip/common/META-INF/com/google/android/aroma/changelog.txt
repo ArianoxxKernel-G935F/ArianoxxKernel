@@ -1,0 +1,121 @@
+CHANGELOG
+
+V2.2
+*Ramdisk: add spectrum support with optimized profile
+*Fix GUSTURE typo 
+*Update mtweaks 
+*Full rebase on old G935FXXS3EREM
+*Reduced RQ Lock-Contention for upto 0.7% increase in Performance 
+*Misc battery and performance improvements
+*Reverted "increase charge levels"
+*Update Magisk
+*Fix random reboot
+*A lot of other changes!
+
+
+V2.1
+*Rebuild aroma [thanks to @WolverineBeast] 
+*Update ELS base to ERI1
+*Update ramdisk to ERJ2
+*Update linux to 3.18.124
+*Update busybox
+*Defconfig: disable some log 
+*Update magisk to 17.1
+*Fix random reboot
+*Clean up code
+*A lot of other optimization (check github)
+*Add cpufreq_notify_utilization
+*Kconfig add line 
+*Update gcc4.9
+*Interactive: don't scale up if load is <= 6%
+*Trace: exynos-ss: only dump first task to prevent flooding
+*Bcmdhd: fix CONFIG_HZ dependency
+*Panel: add reversible smart dimming brightness control
+*Ramdisk: Patch dalvikcache_data_file  
+*Add support for odm
+*Fully remove knox
+*Fix ramdisk script issue
+*Defconfig: disable some tracers
+*Defconfig: disable integrity check 
+*Cpufreq: interactive: don't scale up if load is <= 6%, it's not worth it 
+*Mobicore: reduce kernel log output 
+*Defconfig: disable profiling 
+*Fix adb
+
+V2.0
+*Everything is changed
+
+V1.3
+*Private mod fix
+*Performance optimazion (see GitHub)
+*Battery optimization (see GitHub)
+*Switched to custom TC
+*Rebased
+*Try to fix sdcardfs
+*Disable zram by default
+*Disable secure_camera (thanks to @twy2004)
+*Update wakeclock blocker
+*Update mtweaks to 2.9.2
+*Update ramsik to ERF4
+*Ramdisk: fix recovery issue 
+*ArianoxxKernel spashscreen in aroma
+*Ipv4: Disable KNOX 
+*Dts: Increase charge levels 
+*Ipv4: set initial TCP window size to 64K (speed improvement) 
+*Cpufreq: Add cpufreq_notify_utilization 
+
+V1.2
+*Updated aroma
+*Performance optimazion (see GitHub)
+*Battery optimization (see GitHub)
+*Some new wakeclock blocked
+*Update magisk
+*Update source to G935FXXU2EREM
+
+V1.1
+*Add arch_power support
+*Performance optimazion (see GitHub)
+*Battery optimization (see GitHub)
+*Media kill process
+*Improve wakeclock blocker power
+*Reduced sleep time 
+
+V1.0
+*Sources ramdisk EREM
+*Freq min GPU a 112MHz
+*CPU UC for Big and Little Cluster
+*GPU OC and UC 806mhz and 112mhz
+*Voltage controll and CPU Undervolt
+*AIK Kitchen 2.9
+*-O3 Optimizations
+*Many Performance and Battery optimizations
+*TCP Congestion many options Westwood as default
+*Cpufreq: cache tunables for ondemand and conservative governors 
+*Many Governorns to choose
+*Schedulers many to choose cfq by default
+*Mod Fake Knox 0
+*Busybox 1.27.2
+*Magisk 16.2 & Manager 5.9.1
+*Disasbled DM-Verity, Knox, RKP, Tima, Rooting Restriction
+*SELinux Permissive
+*LZ4  compression and support
+*Init.d support
+*Sensorhub wakelock: reduced to 50% 
+*Scripts: Remove DIRTY status from Kernel 
+*IO Schedulers: noop, deadline, cfq, zen
+*CPU Governors: impulse, conservative, ondemand, interactive, performance
+*Reduced wifi wakelocks
+*Boeffla wakelocks blocker
+*Keep 3cores of cluster1 off during stand-by
+*GPU Voltage & settings
+*Some defconfig optimization
+*Battery settings
+*Drivers: Add state notifier driver 
+*Binder: set binder_debug_mask=0 to suppress logging 
+*Autoreset of Secure Storage
+*Enabled hidden tcp-algorithm
+*Crc configurable and disabled by default
+*Max77854: Fade Led 
+*CIFS and NTFS support
+*SafetyNet: GREEN
+
